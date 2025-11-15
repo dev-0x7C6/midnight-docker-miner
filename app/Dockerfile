@@ -4,8 +4,17 @@ FROM ubuntu:26.04 as app
 ENV LC_ALL C.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+
 ENV MINER_URL https://github.com/ADA-Markets/midnight_fetcher_bot_public.git
-ENV MINER_REV e886246a14555182e6d9a3b9bb8ce29c4cf45be6
+ENV MINER_REV 593c053cad53e9715a10ace966cb24792157061e
+
+ENV RUSTFLAGS -C target-cpu=native \
+ -C opt-level=3 \
+ -C codegen-units=1 \
+ -C panic=abort \
+ -C inline-threshold=1000 \
+ -C link-arg=-Wl,-O3 \
+ -C embed-bitcode=yes
 
 # Dependencies
 RUN apt-get update
@@ -24,7 +33,6 @@ RUN git clone --revision=$MINER_REV $MINER_URL /app
 
 # Prepare hash-engine
 WORKDIR /app/hashengine
-RUN export RUSTFLAGS="-C target-cpu=native -C panic=abort"
 RUN cargo build --release --bin hash-server
 
 # Prepare web-ui
