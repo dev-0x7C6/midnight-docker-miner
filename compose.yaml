@@ -6,4 +6,4 @@ services:
     volumes:
       - ".data:/root/Documents"
     ports:
-      - '2001:3001'
+      - '3001:3001'
