@@ -1,0 +1,9 @@
+services:
+  app: 
+    build:
+      context: app
+    stop_signal: SIGTERM
+    volumes:
+      - ".data:/root/Documents"
+    ports:
+      - '2001:3001'
